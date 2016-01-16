@@ -1,102 +1,35 @@
-// Hangman
-// The classic game of hangman
+// Scoping
+// Demonstrates scopes
 
 #include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <ctime>
-#include <cctype>
 
 using namespace std;
 
-int main()
-{
-    //setup
-    const int MAX_WRONG = 8;  //maximum number of incorrect guesses allowed
+void func();
 
-    vector<string> words;   //collection of possible words to guess
-    words.push_back("GUESS");
-    words.push_back("HANGMAN");
-    words.push_back("DIFFICULT");
-    words.push_back("SWIMM");
-    words.push_back("HIM");
-    words.push_back("GOOD");
-    words.push_back("SNIPER");
-    words.push_back("FUN");
-    words.push_back("AVOCADO");
-    words.push_back("BATTER");
-    words.push_back("MASHED");
-    words.push_back("MAY");
-    words.push_back("CHOCALATE-CAKE");
-    words.push_back("CRAZY ");
-    words.push_back("FLAVOR");
-    words.push_back("RASINS");
+int main() {
+    int var = 50; //local var in main()
+    cout << "In main() var is: " << var << "\n\n";
 
+    func();
 
-    srand(static_cast<unsigned int>(time(0)));
-    random_shuffle(words.begin(), words.end());
+    cout << "Back in main() var is: " << var << "\n\n";
 
-    const string THE_WORD = words[0];           //word to guess
-    int wrong = 0;                              //number of incorrect guesses
-    string soFar(THE_WORD.size(), '_');         //word guessed so far
-    string used = "";                           //letters already guessed
-
-    cout << "Welcome to Hangman. Good luck!\n";
-
-    //main loop
-    while ((wrong < MAX_WRONG) && (soFar != THE_WORD))
     {
-        cout << "\n\nYou have " << (MAX_WRONG - wrong);
-        cout << " incorrect guesses left.\n";
-        cout << "\nYou’ve used the following letters:\n" << used << endl;
-        cout << "\nSo far, the word is:\n" << soFar << endl;
+        cout << "In main() in a new scope var is: " << var << "\n\n";
 
-        char guess;
-        cout << "\n\nEnter your guess: ";
-        cin >> guess;
-        guess = toupper(guess); //make uppercase since secret word in uppercase
-        while (used.find(guess) != string::npos)
-        {
-            cout << "\nYou’ve already guessed " << guess << endl;
-            cout << "Enter your guess: ";
-            cin >> guess;
-            guess = toupper(guess);
-        }
-
-        used += guess;
-
-        if (THE_WORD.find(guess) != string::npos)
-        {
-            cout << "That’s right! " << guess << " is in the word.\n";
-            //update soFar to include newly guessed letter
-            for (int i = 0; i < THE_WORD.length(); ++i)
-            {
-                if (THE_WORD[i] == guess)
-                {
-                    soFar[i] = guess;
-                }
-            }
-        }
-        else
-        {
-            cout << "Sorry, " << guess << " Not it .\n";
-            ++wrong;
-        }
+        cout << "Creating new var in new scope.\n";
+        int var = 10;  // var in new scope, hides other vars name var
+        cout << "In main() in a new scope var is: " << var << "\n\n";
     }
 
-    //shut down
-    if (wrong == MAX_WRONG)
-    {
-        cout << "\nYou’ve been hanged!";
-    }
-    else
-    {
-        cout << "\nYou guessed it!";
-    }
-
-    cout << "\nThe word was " << THE_WORD << endl;
+    cout << "At end of main() var created in new scope no longer exists.\n";
+    cout << "At end of main() var is: " << var << "\n";
 
     return 0;
 }
 
+void func() {
+    int var = -25;  // local var in func()
+    cout << "In func() var is: " << var << "\n\n";
+}
